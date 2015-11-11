@@ -1,0 +1,181 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>请家教</title>
+<script language="javascript">
+function checkValid(s)
+ {
+	 var len=s.length;
+	 for(var i=0;i<len;i++)
+	 {
+		 if(s.charAt(i)!="")
+		 {
+			 return false;
+		 }
+	 }
+	 return true;
+ }
+function okHandle()
+ {
+	 if(checkValid(document.A.xingMing.value))
+	 {
+		 alert("学员姓名不能为空！！");
+	 }
+	 else if(checkValid(document.A.address.value))
+	 {
+		 alert("家教地址不能为空！！");
+	 }
+	 else if(checkValid(document.A.phone.value))
+	 {
+		 alert("联系电话不能为空！！");
+	 }
+	 else if(checkValid(document.A.name.value))
+	 {
+		 alert("联系人姓名不能为空！！");
+	 }			  
+	 else
+	 {
+		
+	 }
+ }
+function regex(obj,regex,prompt){
+	 //在JavaScript中，正则表达式使用"/"开头和结束,一个正则常量
+		if(obj.value==""){
+			alert("内容不能为空！");obj.focus();
+		}else{
+			if(!regex.test(obj.value)){		
+				alert(prompt);
+				obj.focus();	
+			}
+		}
+	} 
+ </script>
+<style type="text/css">
+.table{
+	border-color:#666;
+	float:right;
+	margin-left:70px;
+	border-collapse:collapse;
+	empty-cells:hide;
+}
+body{
+	background-image:url('/ZJCeducation/zjc/image/ying.jpg');
+	background-position:0%,0%;
+	background-size:cover;
+}
+</style>
+</head>
+<body>
+<form action="/ZJCeducation/parents/parentsApply.action" method="post" name="A">
+<table border="1" class="table" width="723">
+<caption align="center"><font size="+1" color="#FFCC00">学员信息表</font></caption>
+<tr height="38">
+<td width="130" height="38">学员姓名：</td>
+<td width="577">
+<input style="text" name="parentsApply.child_name" id="xingMing" size="20" maxlength="15"/>
+</td>
+</tr>
+
+<tr>
+<td height="38">学员性别</td>
+<td >
+<input type="radio" id="gender" name="parentsApply.child_gender" value="男" checked="checked" />男性
+<input type="radio" id="gender" name="parentsApply.child_gender" value="女" />女性
+</td>
+</tr>
+
+<tr height="38">
+<td>学员年级：</td>
+<td><select name="parentsApply.child_grade"><option value="小学" selected="selected">小学</option><option value="初一/二">初一/二</option><option value="初三">初三</option><option value="高一/二">高一/二</option><option value="高三">高三</option></select>
+</td>
+</tr>
+
+<tr height="38">
+<td>辅导科目：</td>
+<td>
+  <p>
+    <input type="checkbox" id="parentsApplysubject1" name="parentsApply.subject" value="语文" />语文<input type="checkbox" id="parentsApplysubject2" name="parentsApply.subject" value="数学" onClick="countChoices(this)" />数学<input type="checkbox" id="parentsApplysubject3" name="parentsApply.subject" value="英语" onClick="countChoices(this)" />英语<input type="checkbox" id="parentsApplysubject4" name="parentsApply.subject" value="物理"  onClick="countChoices(this)"/>物理<input type="checkbox" id="parentsApplysubject5" name="parentsApply.subject" value="化学" onClick="countChoices(this)" />化学<input type="checkbox" id="parentsApplysubject6" name="parentsApply.subject" value="生物" onClick="countChoices(this)" />生物<input type="checkbox" id="parentsApplysubject7" name="parentsApply.subject" value="政治" onClick="countChoices(this)"/>政治<input type="checkbox" id="parentsApplysubject8" name="parentsApply.subject" value="历史" onClick="countChoices(this)"/>历史<input type="checkbox" id="parentsApplysubject9" name="parentsApply.subject" value="地理" onClick="countChoices(this)" />地理
+  </p>
+</td>
+</tr>
+
+<tr height="38">
+<td>家教地址：</td>
+<td>
+<input type="text" id="address" name="parentsInfo.address" size="20" maxlength="20"/>
+</td>
+</tr>
+
+<tr height="38">
+<td>教师性别要求：</td>
+<td>
+<input type="radio"  name="parentsApply.teacher_gender" value="不限" />不限
+<input type="radio"  name="parentsApply.teacher_gender" value="男" />男性
+<input type="radio"  name="parentsApply.teacher_gender" value="女" />女性
+</td>
+</tr> 
+
+<tr height="38">
+<td>家教时间：</td>
+<td><select name="teach_time1"><optgroup label='预计起始月份'></optgroup><option value="1" selected="selected">一月</option><option value="2">二月</option><option value="3">三月</option><option value="4">四月</option><option value="5">五月</option><option value="6">六月</option><option value="7">七月</option><option value="8">八月</option><option value="9">九月</option><option value="10">十月</option><option value="11">十一月</option><option value="12">十二月</option></select>
+—<select name="teach_time2"><optgroup label='预计结束月份'></optgroup><option value="1" selected="selected">一月</option><option value="2">二月</option><option value="3">三月</option><option value="4">四月</option><option value="5">五月</option><option value="6">六月</option><option value="7">七月</option><option value="8">八月</option><option value="9">九月</option><option value="10">十月</option><option value="11">十一月</option><option value="12">十二月</option></select>
+</td>
+</tr>
+
+<tr height="38">
+<td>其他要求：</td>
+<td>
+<textarea id="request" name="parentsApply.request" cols="40" rows="3" maxlength="30" onclick="this.value=''">请填写对家教老师的其他要求，不超过30个字。</textarea>
+</td>
+</tr>
+
+<tr>
+<th colspan="2" ><font size="+1" color="#ffcc00" >家长/联系人信息</font></th>
+</tr>
+<tr>
+<td height="38">联系人姓名：</td>
+<td>
+<input type="text" id="name" name="parentsInfo.name" size="20" maxlength="15" />
+</td>
+</tr>
+
+<tr height="38">
+<td>联系人性别：</td>
+<td>
+<input type="radio" id="gender" name="parentsInfo.gender" value="男" checked="checked" />男性
+<input type="radio" id="gender" name="parentsInfo.gender" value="女" />女性
+</td>
+</tr>
+
+<tr height="38">
+<td>联系电话：</td>
+<td>
+<input type="text" id="phone" name="parentsInfo.phone" size="20" maxlength="15" onblur="regex(this,/[\d]{11}/,'请输入11位手机号！')"/>&nbsp;
+</td>
+</tr>
+
+<tr height="38">
+<td>QQ：</td>
+<td>
+<input type="text" id="qq" name="parentsInfo.qq" size="20" maxlength="10" onBlur="regex(this,/[\d]{5,11}/,'请填写本人qq,5-10位数字！')"/>&nbsp;
+</td>
+</tr>
+
+<tr height="38">
+<td>Email：</td>
+<td>
+<input type="text" id="email" name="parentsInfo.email" size="20" maxlength="30" onBlur="regex(this,/\w+([-+.]\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*/,'请填写正确的邮箱地址！')"/>&nbsp;
+</td>
+</tr>
+
+<tr border="0">
+<th colspan="2" border="0" height="38">
+<input type="submit" value="提交" onmouseover="okHandle()" />
+<input type="reset"  value="重置" />
+</th>
+</tr>
+</table>
+</form>
+</body>
+</html>

@@ -1,0 +1,378 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:context ="http://www.springframework.org/schema/context" 
+    xmlns:aop="http://www.springframework.org/schema/aop" 
+    xmlns:tx="http://www.springframework.org/schema/tx"
+    xsi:schemaLocation="http://www.springframework.org/schema/beans 
+        http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
+        http://www.springframework.org/schema/context
+        http://www.springframework.org/schema/context/spring-context-2.5.xsd
+        http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-2.5.xsd
+        http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-2.5.xsd" >
+
+	<!-- 建立数据源 -->
+    <!-- <bean id="dataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource"
+        destroy-method="close">
+        <property name="driverClass" value="com.mysql.jdbc.Driver"/>
+           
+        <property name="jdbcUrl"  value="jdbc:mysql://localhost:3306/zjc?useUnicode=true&amp;characterEncoding=GBK"/>
+         
+        	连接池中保留的最小连接数。
+        <property name="minPoolSize" value="1"/>       
+  
+  			连接池中保留的最大连接数。Default: 15 
+        <property name="maxPoolSize">
+              <value>50</value>
+        </property>
+  
+  			初始化时获取的连接数，取值应在minPoolSize与maxPoolSize之间。Default: 3 
+        <property name="initialPoolSize">
+           <value>5</value>
+        </property>
+        	 默认初始化获取3个连接  
+       		 空闲连接检查时间 
+        <property name="idleConnectionTestPeriod">
+            <value>18000</value>
+        </property>	 
+        	 最大空闲连接时间 60s
+        <property name="maxIdleTime">
+            <value>60</value>
+        </property>
+        	 检查获取的连接是否有效 
+        <property name="testConnectionOnCheckin">
+            <value>true</value>
+        </property>
+        <property name="testConnectionOnCheckout">
+            <value>true</value>
+        </property>
+    
+           	 数据库登录用户名&密码 
+        <property name="username" value="root"></property>
+        <property name="password" value=""></property>
+            
+    </bean>
+    -->
+        
+    <!-- 把数据源注入给Session工厂 -->    
+    <bean id="sessionFactory"
+        class="org.springframework.orm.hibernate4.LocalSessionFactoryBean">
+       	<!-- <property name="dataSource">
+            <ref bean="dataSource" />
+        </property>
+         -->
+        <property name="configLocation">  
+            <value>classpath:hibernate.cfg.xml</value>  
+        </property>  
+                             
+        <!-- <property name="hibernateProperties">
+            <props>
+                <prop key="hibernate.dialect">
+                    org.hibernate.dialect.MySQL5InnoDBDialect
+                </prop>
+                <prop key="hibernate.show_sql">false</prop>
+            </props>
+        </property>
+                 
+        <property name="mappingResources">
+            <list>                
+                <value>zjc/edu/Teacher_info.hbm.xml</value>                
+            </list>
+        </property>
+         -->
+    </bean>
+       
+    <!-- 声明式事务管理  -->
+    <bean id="transactionManager" class="org.springframework.orm.hibernate4.HibernateTransactionManager">
+        <property name="sessionFactory" ref="sessionFactory" />
+    </bean>    
+     
+    <!-- 配置事务规则 -->
+    <!-- <tx:advice id="txAdvice" transaction-manager="transactionManager">
+        <tx:attributes>	 配置哪些方法要加入事务控制  
+            <tx:method name="save*" propagation="REQUIRED" />
+            <tx:method name="add*" propagation="REQUIRED" />
+            <tx:method name="update*" propagation="REQUIRED" />
+            <tx:method name="del*" propagation="REQUIRED" />
+            <tx:method name="find*" propagation="REQUIRED" read-only="true" />
+            <tx:method name="*" propagation="SUPPORTS"/>
+        </tx:attributes>
+    </tx:advice>
+     -->
+    <!-- 配置AOP，Spring是通过AOP来进行事务管理的 -->  
+   <!-- <aop:config>	-->
+        <!-- 事务要处理的类的路径  ， 设置pointCut表示哪些方法要加入事务处理 	-->
+        <!-- <aop:pointcut id="interceptorPointCuts"
+            expression="execution(* zjc.edu.*.*(..))" />-->
+        <!-- 通过advisor来确定具体要加入事务控制的方法 	-->
+        <!--<aop:advisor advice-ref="txAdvice" pointcut-ref="interceptorPointCuts" />
+    </aop:config>
+     --> 
+    <!-- DAO-->
+    
+    <bean id="Teacher_infoDaoImpl" class="zjc.edu.dao.Teacher_infoDaoImpl" scope="singleton">
+        <property name="sf">
+            <ref bean="sessionFactory" />
+        </property>
+    </bean>
+    <bean id="Teacher_applyDaoImpl" class="zjc.edu.dao.Teacher_applyDaoImpl" scope="singleton">
+        <property name="sf">
+            <ref bean="sessionFactory" />
+        </property>
+    </bean>
+    <bean id="parentsInfoDaoImpl" class="zjc.edu.dao.ParentsInfoDAOExtComm" scope="singleton">
+        <property name="sf">
+            <ref bean="sessionFactory" />
+        </property>
+    </bean>
+    <bean id="parentsApplyDaoImpl" class="zjc.edu.dao.ParentsApplyDAOExtComm" scope="singleton">
+        <property name="sf">
+            <ref bean="sessionFactory" />
+        </property>
+    </bean>
+    <bean id="ManagerDAOImpl" class="zjc.edu.dao.ManagerDAOImpl" scope="singleton">
+        <property name="sf">
+            <ref bean="sessionFactory" />
+        </property>
+    </bean>
+    <!-- <bean id="UserDAO" class="com.blank.dao.impl.UserDAOImpl"
+        parent="IBaseDAO">
+    </bean>
+     -->
+    
+    <!-- Service  -->  
+    <bean id="Teacher_infoService" class="zjc.edu.service.Teacher_infoServiceImpl">
+        <property name="teacher_infoDao">
+            <ref bean="Teacher_infoDaoImpl" />
+        </property>      
+    </bean>  
+    <bean id="Teacher_applyService" class="zjc.edu.service.Teacher_applyServiceImpl">        
+        <property name="teacher_applyDao">
+            <ref bean="Teacher_applyDaoImpl" />
+        </property>    
+    </bean>   
+    <bean id="ParentsService" class="zjc.edu.service.ParentsServiceImpl">        
+        <property name="parentsInfoDao">
+            <ref bean="parentsInfoDaoImpl" />
+        </property> 
+        <property name="parentsApplyDao">
+            <ref bean="parentsApplyDaoImpl" />
+        </property>   
+    </bean>  
+    <bean id="ManagerService" class="zjc.edu.service.ManagerServiceImpl">        
+        <property name="managerDAO">
+            <ref bean="ManagerDAOImpl" />
+        </property>    
+    </bean>    
+    
+    <!-- Action -->
+    <!-- struts使用这里的id做为class -->
+    <!-- Teacher Action -->
+    <bean id="TeacherRegisterAction" class="zjc.edu.action.TeacherAction" scope="prototype">
+        <property name="teacher_infoService">
+            <ref bean="Teacher_infoService"/>
+        </property>
+    </bean>
+    <bean id="TeacherCenterAction" class="zjc.edu.action.TeacherAction" scope="prototype">
+        <property name="teacher_infoService">
+            <ref bean="Teacher_infoService"/>
+        </property>
+    </bean>
+    <bean id="TeacherLoginAction" class="zjc.edu.action.TeacherAction" scope="prototype">
+        <property name="teacher_infoService">
+            <ref bean="Teacher_infoService"/>
+        </property>
+    </bean>
+    <bean id="TeacherLogoutAction " class="zjc.edu.action.TeacherAction" scope="prototype">
+    </bean>
+    <bean id="TeacherEditAction" class="zjc.edu.action.TeacherAction" scope="prototype">
+        <property name="teacher_infoService">
+            <ref bean="Teacher_infoService"/>
+        </property>
+    </bean>
+    <bean id="changePasswordAction" class="zjc.edu.action.TeacherAction" scope="prototype">
+        <property name="teacher_infoService">
+            <ref bean="Teacher_infoService"/>
+        </property>
+    </bean>
+    <bean id="TeacherApplyAction" class="zjc.edu.action.TeacherAction" scope="prototype">
+    	<property name="teacher_infoService">
+            <ref bean="Teacher_infoService"/>
+        </property>
+        <property name="teacher_applyService">
+            <ref bean="Teacher_applyService"/>
+        </property>
+    </bean>
+    <!-- be used for login interceptor -->
+    <bean id="TeacherAction" class="zjc.edu.action.TeacherAction" scope="prototype">   
+        <property name="teacher_infoService">
+            <ref bean="Teacher_infoService"/>
+        </property>
+    </bean>
+    
+    
+    <!-- Parents Action -->
+    <bean id="ParentsRegisterAction" class="zjc.edu.action.ParentsAction" scope="prototype">
+        <property name="parentsService">
+            <ref bean="ParentsService"/>
+        </property>
+    </bean>
+    <bean id="ParentsCenterAction" class="zjc.edu.action.ParentsAction" scope="prototype">
+        <property name="parentsService">
+            <ref bean="ParentsService"/>
+        </property>
+    </bean>
+    <bean id="ParentsLoginAction" class="zjc.edu.action.ParentsAction" scope="prototype">
+        <property name="parentsService">
+            <ref bean="ParentsService"/>
+        </property>
+    </bean>
+    <bean id="ParentsLogoutAction " class="zjc.edu.action.ParentsAction" scope="prototype">
+    </bean>
+    <bean id="ParentsEditAction" class="zjc.edu.action.ParentsAction" scope="prototype">
+        <property name="parentsService">
+            <ref bean="ParentsService"/>
+        </property>
+    </bean>
+    <bean id="changePPasswordAction" class="zjc.edu.action.ParentsAction" scope="prototype">
+        <property name="parentsService">
+            <ref bean="ParentsService"/>
+        </property>
+    </bean>
+    <bean id="ParentsApplyAction" class="zjc.edu.action.ParentsAction" scope="prototype">
+    	<property name="parentsService">
+            <ref bean="ParentsService"/>
+        </property>       
+    </bean>
+    <!-- be used for login interceptor -->
+    <bean id="ParentsAction" class="zjc.edu.action.ParentsAction" scope="prototype">   
+        <property name="parentsService">
+            <ref bean="ParentsService"/>
+        </property>
+    </bean>
+    
+    
+    <!-- Manager Action -->
+    <bean id="ManagerLoginAction" class="zjc.edu.action.ManagerAction" scope="prototype">  
+    	<property name="managerService">
+            <ref bean="ManagerService"/>
+        </property>            
+    </bean>
+    <bean id="ManageCenterAction" class="zjc.edu.action.ManagerAction" scope="prototype">      	      
+    </bean>
+    <bean id="ManagerLogoutAction " class="zjc.edu.action.ManagerAction" scope="prototype">      	
+    </bean>       
+    <bean id="ReadTodayTeacherApplyAction" class="zjc.edu.action.ManagerAction" scope="prototype">      	
+        <property name="teacher_applyService">
+            <ref bean="Teacher_applyService"/>
+        </property>  
+    </bean>
+    <bean id="ReadWeekTApplyAction" class="zjc.edu.action.ManagerAction" scope="prototype">      	
+        <property name="teacher_applyService">
+            <ref bean="Teacher_applyService"/>
+        </property>  
+    </bean>
+    <bean id="ReadCurMonthTeacherApplyAction" class="zjc.edu.action.ManagerAction" scope="prototype">      	
+        <property name="teacher_applyService">
+            <ref bean="Teacher_applyService"/>
+        </property>   
+    </bean>
+    <bean id="ReadAllTeacherApplyAction" class="zjc.edu.action.ManagerAction" scope="prototype">      	
+        <property name="teacher_applyService">
+            <ref bean="Teacher_applyService"/>
+        </property>   
+    </bean>
+    <bean id="ReadAnytimeTeacherApplyAction" class="zjc.edu.action.ManagerAction" scope="prototype">      	
+        <property name="teacher_applyService">
+            <ref bean="Teacher_applyService"/>
+        </property>    
+    </bean>
+    <bean id="UndoneTApplyAction" class="zjc.edu.action.ManagerAction" scope="prototype">      	
+        <property name="teacher_applyService">
+            <ref bean="Teacher_applyService"/>
+        </property>    
+    </bean>    
+    <bean id="DoneTApplyAction" class="zjc.edu.action.ManagerAction" scope="prototype">      	
+        <property name="teacher_applyService">
+            <ref bean="Teacher_applyService"/>
+        </property>    
+    </bean>
+    <bean id="NumberTApplyAction" class="zjc.edu.action.ManagerAction" scope="prototype">      	
+        <property name="teacher_applyService">
+            <ref bean="Teacher_applyService"/>
+        </property>    
+    </bean>
+    <bean id="PhoneTApplyAction" class="zjc.edu.action.ManagerAction" scope="prototype">      	
+        <property name="teacher_applyService">
+            <ref bean="Teacher_applyService"/>
+        </property>            
+    </bean>
+    <bean id="NumberTInfoAction" class="zjc.edu.action.ManagerAction" scope="prototype">      	
+        <property name="teacher_infoService">
+            <ref bean="Teacher_infoService"/>
+        </property>    
+    </bean> 
+    <bean id="PhoneTInfoAction" class="zjc.edu.action.ManagerAction" scope="prototype">      	
+        <property name="teacher_infoService">
+            <ref bean="Teacher_infoService"/>
+        </property>     
+    </bean>
+    <bean id="SetTAppStateAction" class="zjc.edu.action.ManagerAction" scope="prototype">      	
+        <property name="teacher_applyService">
+            <ref bean="Teacher_applyService"/>
+        </property>    
+    </bean>
+    
+    
+    <bean id="ReadTodayParentsApplyAction" class="zjc.edu.action.ManagerAction" scope="prototype">      	
+        <property name="parentsService">
+            <ref bean="ParentsService"/>
+        </property> 
+    </bean>
+    <bean id="ReadWeekPApplyAction" class="zjc.edu.action.ManagerAction" scope="prototype">      	
+        <property name="parentsService">
+            <ref bean="ParentsService"/>
+        </property> 
+    </bean>
+    <bean id="ReadCurMonthParentsApplyAction" class="zjc.edu.action.ManagerAction" scope="prototype">      	
+        <property name="parentsService">
+            <ref bean="ParentsService"/>
+        </property>  
+    </bean>
+    <bean id="ReadAllParentsApplyAction" class="zjc.edu.action.ManagerAction" scope="prototype">      	
+        <property name="parentsService">
+            <ref bean="ParentsService"/>
+        </property> 
+    </bean>    
+    <bean id="UndonePApplyAction" class="zjc.edu.action.ManagerAction" scope="prototype">      	
+        <property name="parentsService">
+            <ref bean="ParentsService"/>
+        </property>   
+    </bean>    
+    <bean id="DonePApplyAction" class="zjc.edu.action.ManagerAction" scope="prototype">      	
+        <property name="parentsService">
+            <ref bean="ParentsService"/>
+        </property>    
+    </bean>
+    <bean id="NumberPApplyAction" class="zjc.edu.action.ManagerAction" scope="prototype">      	
+        <property name="parentsService">
+            <ref bean="ParentsService"/>
+        </property>    
+    </bean>  
+    <bean id="NumberPInfoAction" class="zjc.edu.action.ManagerAction" scope="prototype">      	
+        <property name="parentsService">
+            <ref bean="ParentsService"/>
+        </property>    
+    </bean> 
+    <bean id="PhonePInfoAction" class="zjc.edu.action.ManagerAction" scope="prototype">      	
+        <property name="parentsService">
+            <ref bean="ParentsService"/>
+        </property>    
+    </bean> 
+    <bean id="SetPAppStateAction" class="zjc.edu.action.ManagerAction" scope="prototype">      	
+        <property name="parentsService">
+            <ref bean="ParentsService"/>
+        </property>    
+    </bean>     
+    
+</beans>

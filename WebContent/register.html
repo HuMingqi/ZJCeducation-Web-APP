@@ -1,0 +1,141 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>注册</title>
+<script language="javascript">
+ function checkValid(s)
+ {
+	 var len=s.length;
+	 for(var i=0;i<len;i++)
+	 {
+		 if(s.charAt(i)!="")
+		 {
+			 return false;
+		 }
+	 }
+	 return true;
+ }
+function checkLenth(j)
+{
+	var len=j.length;
+	if(len<2)
+	{
+		return true;
+	}
+	return false;
+}
+function checkLenth2(j)
+{
+	var len=j.length;
+	if(len<6)
+	{
+		return true;
+	}
+	return false;
+}
+function checkLenth1(m)
+{
+	var len=m.length;
+	if(len>15)
+	{
+		return true;
+	}
+	return false;
+}
+function okHandle()
+ {
+	 var mima2=document.getElementById("mima2").value;
+	 var mima1=document.getElementById("mima1").value ;
+	 if(mima1!==mima2)
+	 {
+		  alert("密码和密码确认不同，请重新输入");
+	 }
+	 else if(checkValid(document.test.userName1.value))
+	 {
+		 alert("用户名不能为空!");
+	 }
+	 else if(checkLenth(document.test.userName1.value))
+	 {
+		 alert("用户名小于两位");
+	 }
+	 else if(checkLenth1(document.test.userName1.value))
+	 {
+		 alert("用户名大于15位");
+	 }
+	 else if(checkValid(document.test.passWord1.value))
+	 {
+		 alert("用户密码不能为空");
+	 }
+	  else if(checkLenth2(document.test.passWord1.value))
+	 {
+		 alert("用户名密码小于6位");
+	 }
+	 else if(checkLenth1(document.test.passWord1.value))
+	 {
+		 alert("用户名密码大于15位"); 
+	 }
+	 else if(checkValid(document.test.passWord2.value))
+	 {
+		 alert("用户确认密码不能为空");
+	 }
+	 
+	 else if(checkValid(document.test.Mail.value))
+	 {
+		 alert("用户邮箱不能为空");
+	 }
+	 else
+	 {
+		 alert("您填写正确");
+	 }
+ }
+ function cancelHandle()
+ {
+	 document.test.userName.value="";
+	 document.test.passWord.value="";
+ }
+ </script>
+<style type="text/css">
+body{
+	background-image:url('image/zhuce.jpg');
+	background-repeat:no-repeat;
+	background-position:10% 20%;
+	background-size:cover;
+}
+.conten{
+	width:100%;
+	height:550px;
+	position:absolute;
+	margin：0px auto;
+}
+</style>
+</head>
+<body>
+<p align="center">会员注册</p>
+<hr />
+<div class="conten">
+<form name="test">
+用户名称：
+<input style="text" name="userName1" size="30" maxlength="15" onblur="value=value.replace(/[^\a-\z\A-\Z0-9\u4E00-\u9FA5\_]/g,'')"> 
+(*2—15位，字母、数字、汉字、下划线组合）
+<br /><br />
+用户密码：
+<input type="password" name="passWord1" size="30" maxlength="15" id="mima1"  onblur="value=value.replace(/[^\a-\z\A-\Z0-9]/g,'')">（*6—15位，字母、数字组合，区分大小写）
+<br /><br />
+确认密码：
+<input type="password" name="passWord2" size="30" maxlength="15" id="mima2" >（*请再次输入密码）
+<br /><br />
+电子邮箱：
+<input type="text" name="Mail" size="30" maxlength="30" onblur="value=value.replace(/[^\a-\z\A-\Z0-9\@\.]/g,'')"/>（*请填写正确的电子邮箱地址）
+<br /><br />
+会员类型：
+<input type="radio" name="teachertype" value="teacher" checked="checked" />教员(做家教请选择此项)<br />
+&nbsp;&nbsp;&nbsp;&nbsp;
+<input type="radio" name="teachertype" value="parents" />家长(请家教请选择此项)<br/>
+<br /><br />
+<input type="submit" value="提交" onmouseover="okHandle()"/>
+<input type="reset" value="重置" onClick="cancelHandle()"/>
+</form>
+</div>
+</body>
+</html>

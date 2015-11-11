@@ -1,0 +1,224 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>做家教</title>
+<script language="javascript">
+function checkValid(s)
+ {
+	 var len=s.length;
+	 for(var i=0;i<len;i++)
+	 {
+		 if(s.charAt(i)!="")
+		 {
+			 return false;
+		 }
+	 }
+	 return true;
+ }
+function okHandle()
+ {
+	 if(checkValid(document.A.teacher_infoname.value))
+	 {
+		 alert("教员姓名不能为空！！");
+	 }
+	  else if(checkValid(document.A.birth_date.value))
+	 {
+		 alert("出生日期不能为空！！");
+	 }
+	 else if(checkValid(document.A.teacher_infoid_number.value))
+	 {
+		 alert("身份证号不能为空！！");
+	 }
+	 else if(checkValid(document.A.teacher_infoschool.value))
+	 {
+		 alert("所在学校不能为空！！");
+	 }
+	 else if(checkValid(document.A.teacher_infomajor.value))
+	 {
+		 alert("所学专业不能为空！！");
+	 }
+	  else if(checkValid(document.A.teacher_infoaddress.value))
+	 {
+		 alert("家教地点不能为空！！");
+	 }
+	  else if(checkValid(document.A.teacher_infophone.value))
+	 {
+		 alert("电话号码不能为空！！");
+	 }
+	  else if(checkValid(document.A.teacher_infoemail.value))
+	 {
+		 alert("邮箱地址不能为空！！");
+	 }
+	 else
+	 {
+		
+	 }
+ }
+ function cancelHandle()
+ {
+	 document.A.teacher_infoname.value="";
+	 document.A.teacher_infoid_number.value="";
+	 document.A.teacher_infoschool.value="";
+	 document.A.teacher_infomajor.value="";
+	 document.A.teacher_infoaddress.value="";
+	 document.A.teacher_infophone.value="";
+	 document.A.teacher_infoemail.value="";
+	 document.teacher_applyself_introduction.value="";
+ }
+ function countChoices(obj) {
+max = 3;
+subject1 = obj.form.teacher_applysubject1.checked;
+subject2 = obj.form.teacher_applysubject2.checked;
+subject3 = obj.form.teacher_applysubject3.checked;
+subject4 = obj.form.teacher_applysubject4.checked;
+subject5 = obj.form.teacher_applysubject5.checked;
+subject6 = obj.form.teacher_applysubject6.checked;
+subject7 = obj.form.teacher_applysubject7.checked;
+subject8 = obj.form.teacher_applysubject8.checked;
+subject9 = obj.form.teacher_applysubject9.checked;
+count = (subject1 ? 1 : 0) + (subject2 ? 1 : 0) + (subject3 ? 1 : 0) + (subject4 ? 1 : 0) + (subject5 ? 1 : 0)+ (subject6 ? 1 : 0)+ (subject7 ? 1 : 0)+ (subject8 ? 1 : 0)+ (subject9 ? 1 : 0);
+if (count > max) {
+alert("对不起，你只能选择" +max+"个项目!");
+obj.checked = false;
+   }
+}
+
+ function regex(obj,regex,prompt){
+ //在JavaScript中，正则表达式使用"/"开头和结束,一个正则常量
+	if(obj.value==""){
+		alert("内容不能为空！");obj.focus();
+	}else{
+		if(!regex.test(obj.value)){		
+			alert(prompt);
+			obj.focus();	
+		}
+	}
+} 
+function equals(id1,id2){
+	var e1=document.getElementById(id1);
+	var e2=document.getElementById(id2);
+	if(e1.value==''||e2.value==''){
+		alert("请输入密码！");
+	}else if(e1.value!=e2.value){
+		alert("两次输入密码不一致！");
+	}
+} 
+ </script>
+<style type="text/css">
+body{
+	background-image:url("image/betutorbg.jpg");
+	background-size:cover;
+}
+.head{
+	width:100%;
+	height:190px;
+	border-bottom-width:1px;
+	border-bottom-style:solid;
+}
+.leftbar{
+	width:32%;
+	height:500px;
+	float:left;
+}
+.conten{
+	width:600px;
+	height:580px;
+	float:left;
+}
+.tablein{
+	border:solid;
+	border-width:1px;
+}
+</style>
+</head>
+<body>
+<div class="head"></div>
+<div class="leftbar"></div>
+<div class="conten">
+
+<form name="A" action="/ZJCeducation/teacherApply.action" method="post">
+<table >
+<tr bgcolor="#999999">
+<td>教员信息：</td><td width="453">【注】以下属教员必填信息，请如实填写！</td>
+</tr>
+<tr>
+<td>教员姓名：</td>
+<td><input type="text" id="teacher_infoname" name="teacher_info.name" size="20" maxlength="15" /></td>
+</tr>
+<tr>
+<td>性别：</td>
+<td><select name="teacher_info.gender"><option selected="selected" value="男">男</option><option value="女">女</option></select></td>
+</tr>
+<tr><td>出生日期：</td>
+<td><input name="birth_date" size="20" onblur="regex(this,/(19[\d]{2}|200[\d])\/(0?[1-9]|1[0-2])\/((0?[1-9])|((1|2)[0-9])|30|31)/,'请填写格式正确真实的出生日期！，\n日期格式：YYYY/MM/DD,如1991/01/01')"></input>(格式：YYYY/MM/DD,如1991/01/01！)</td>
+</tr>
+<tr>
+<td>身份证号：</td>
+<td><input type="text" id="teacher_infoid_number" name="teacher_info.id_number" size="20" maxlength="18" onblur="regex(this,/[\d]{15}|[\d]{18}/" /></td>
+</tr>
+<tr>
+<td>所在学校：</td>
+<td><input type="text" id="teacher_infoschool" name="teacher_info.school" size="20" maxlength="15" /></td>
+</tr>
+<tr>
+<td>所学专业：</td>
+<td><input type="text" id="teacher_infomajor" name="teacher_info.major" size="20" maxlength="15" /></td>
+</tr>
+<tr>
+<td>学历：</td>
+<td><select name="teacher_info.background"><option value="大专/中专" selected="selected">大专/中专</option><option value="本科生">本科生</option><option value="研究生">研究生</option><option value="博士">博士</option></select>
+</td>
+</tr>
+<tr>
+<td>目前身份：</td>
+<td><select name="teacher_info.identity"><option value="学生" selected="selected">学生</option><option value="在职教师">在职教师</option><option value="社会人士">社会人士</option></select>
+</td>
+</tr>
+<tr>
+<td>个人简历：</td>
+<td><textarea id="teacher_applyself_introduction" name="teacher_apply.self_introduction" rows="3" cols="63" maxlength="30" onclick="this.value=''">请简略填写！不超过30个字符。</textarea></td>
+</tr>
+<tr bgcolor="#999999">
+<td>家教要求：</td><td></td>
+</tr>
+<tr>
+<td>辅导科目：</td>
+<td><input type="checkbox" id="teacher_applysubject1" name="teacher_apply.subject" value="语文" onClick="countChoices(this)" />语文<input type="checkbox" id="teacher_applysubject2" name="teacher_apply.subject" value="数学" onClick="countChoices(this)" />数学<input type="checkbox" id="teacher_applysubject3" name="teacher_apply.subject" value="英语" onClick="countChoices(this)" />英语<input type="checkbox" id="teacher_applysubject4" name="teacher_apply.subject" value="物理"  onClick="countChoices(this)"/>物理<input type="checkbox" id="teacher_applysubject5" name="teacher_apply.subject" value="化学" onClick="countChoices(this)" />化学<input type="checkbox" id="teacher_applysubject6" name="teacher_apply.subject" value="生物" onClick="countChoices(this)" />生物<input type="checkbox" id="teacher_applysubject7" name="teacher_apply.subject" value="政治" onClick="countChoices(this)"/>政治<input type="checkbox" id="teacher_applysubject8" name="teacher_apply.subject" value="历史" onClick="countChoices(this)"/>历史<input type="checkbox" id="teacher_applysubject9" name="teacher_apply.subject" value="地理" onClick="countChoices(this)" />地理</td></tr>
+<tr>
+<td>辅导年级：</td>
+<td><input type="checkbox" name="teacher_apply.grade" value="小学" />小学<input type="checkbox" name="teacher_apply.grade" value="初一/二" />初一/二<input type="checkbox" name="teacher_apply.grade" value="初三" />初三<input type="checkbox" name="teacher_apply.grade" value="高一/二" />高一/二<input type="checkbox" name="teacher_apply.grade" value="高三" />高三</td></tr>
+<tr>
+<td>家教地点：</td>
+<td><input type="text" id="teacher_infoaddress" name="teacher_info.address" size="30" maxlength="20" /></td>
+</tr>
+<tr>
+<td>家教时间：</td>
+<td><select name="teach_time1"><optgroup label='预计起始月份'></optgroup><option value="1" selected="selected">一月</option><option value="2">二月</option><option value="3">三月</option><option value="4">四月</option><option value="5">五月</option><option value="6">六月</option><option value="7">七月</option><option value="8">八月</option><option value="9">九月</option><option value="10">十月</option><option value="11">十一月</option><option value="12">十二月</option></select>
+——<select name="teach_time2"><optgroup label='预计结束月份'></optgroup><option value="1" selected="selected">一月</option><option value="2">二月</option><option value="3">三月</option><option value="4">四月</option><option value="5">五月</option><option value="6">六月</option><option value="7">七月</option><option value="8">八月</option><option value="9">九月</option><option value="10">十月</option><option value="11">十一月</option><option value="12">十二月</option></select>
+</td>
+</tr>
+<tr bgcolor="#999999">
+<td>联系方式：</td><td></td>
+</tr>
+<tr>
+<td>电话号码：</td>
+<td><input type="text" id ="teacher_infophone" name="teacher_info.phone" size="30" maxlength="15" onblur="regex(this,/[\d]{11}/,'请输入11位手机号！')" /></td>
+</tr>
+<tr>
+<td>邮箱地址：</td>
+<td><input type="text" id ="teacher_infoemail" name="teacher_info.email" size="30" maxlength="30" onBlur="regex(this,/\w+([-+.]\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*/,'请填写正确的邮箱地址！')"/>
+</td></tr>
+<tr>
+<td>QQ：</td>
+<td><input type="text" id ="teacher_infoqq" name="teacher_info.qq" size="30" maxlength="10" onBlur="regex(this,/[\d]{5,11}/,'请填写本人qq,5-10位数字！')"/>
+</td></tr>
+<tr><td><a href="agreement.html">查看协议</a>
+</td>
+<td><input type="submit" value="提交" onmouseover="okHandle()" /><input type="reset" name="chognzhi" value="重置"/></td>
+</tr>
+</table>
+</form>
+</div>
+</body>
+</html>

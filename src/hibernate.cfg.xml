@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-configuration PUBLIC
+		"-//Hibernate/Hibernate Configuration DTD 3.0//EN"
+		"http://hibernate.sourceforge.net/hibernate-configuration-3.0.dtd">
+<hibernate-configuration>
+	<session-factory>
+		<property name="connection.username">root</property>
+		<property name="connection.password"></property>
+		<property name="connection.driver_class">com.mysql.jdbc.Driver</property>
+		<property name="connection.url">jdbc:mysql://localhost:3306/zjc?useUnicode=true&amp;characterEncoding=GBK</property>
+				
+     	<!-- 指定连接池里的最大连接数 --> <!-- 配置c3p0数据源 -->
+   	  	<property name="hibernate.c3p0.maxsize">50</property> 
+     	<!-- 指定连接池里最小连接数 --> 
+     	<property name="hibernate.c3p0.minsize">1</property> 
+     	<!--初始化时获取的连接数，取值应在minPoolSize与maxPoolSize之间。Default: 3 
+        <property name="hibernate.c3p0.initialPoolSize">
+           <value>5</value>
+        </property>	-->
+    	<!-- 指定连接池里的超时时常 --> 
+     	<property name="hibernate.cp30.timeout">5000</property> 
+     	<!-- 指定连接池里最大缓存多少个Statement对象 --> 
+     	<property name="hibernate.cp30.max_statements">100</property> 
+     	<property name="hibernate.cp30.idle_test_period">3000</property> 
+     	<property name="hibernate.cp30.acquire_increment">2</property> 
+     	<property name="hibernate.cp30.validate">true</property> 
+     	
+     	<property name="defaultAutoCommit">true</property>  
+     	
+		<!-- 配置Hibernate数据库方言 -->
+		<!-- MySQL org.hibernate.dialect.MySQLDialect -->
+		<!-- MySQL with InnoDB org.hibernate.dialect.MySQLInnoDBDialect -->
+		<!-- MySQL with MyISAM org.hibernate.dialect.MySQLMyISAMDialect -->
+		<!-- MySQL5 org.hibernate.dialect.MySQL5Dialect -->
+		<!-- MySQL5 with InnoDB org.hibernate.dialect.MySQL5InnoDBDialect -->
+		<!-- 注意，这里一定要与你的mysql的版本相匹配，如果是5.0之前的版本，请使用MySQLDialect配套的 -->
+		<property name="dialect">org.hibernate.dialect.MySQL5InnoDBDialect</property>
+		<property name="format_sql">true</property>
+		<property name="show_sql">true</property>
+		<!-- 指定自动生成数据表策略 -->
+		<!-- 如果使用create，则每次都会生成新的数据表 -->
+		<!-- 如果使用create-drop，则每次都会生成新的数据表并且关闭SessionFactory的时候会删除表 -->
+		<!-- 如果使用validate，则会校验hbm文件和数据库中的表，如果hbm中的列在数据表中不存在，抛出异常 -->
+		<property name="hbm2ddl.auto">update</property>
+
+		<!-- 设置Hibernate事务隔离级别 -->
+		<property name="connection.isolation">2</property>
+		<!--使用getCurrentSession()需要在hibernate.cfg.xml文件中加入如下配置：
+			* 如果使用的是本地事务（jdbc事务）
+			=thread;
+			1:尝试取出绑定到线程的Session
+			2:如果没有,则开启一个”事务提交后自动关闭”的Session,并将此Session加入到ThreadLocal的Map中.
+			3:返回Session-->
+		<property name="hibernate.current_session_context_class">thread</property>
+		
+		<mapping resource="zjc/edu/pojo/Teacher_info.hbm.xml" />
+		<mapping resource="zjc/edu/pojo/Teacher_apply.hbm.xml"/>
+		<mapping resource="zjc/edu/pojo/Parents_info.hbm.xml" />
+		<mapping resource="zjc/edu/pojo/Parents_apply.hbm.xml"/>
+		<mapping resource="zjc/edu/pojo/Manager.hbm.xml" />
+	</session-factory>
+</hibernate-configuration>

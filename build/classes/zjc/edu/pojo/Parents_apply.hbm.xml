@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC 
+	"-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+	"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated 2015-1-12 12:34:09 by Hibernate Tools 3.4.0.CR1 -->
+<hibernate-mapping>
+    <class name="zjc.edu.pojo.Parents_apply" table="parents_apply">
+    	<id name="count" type="integer">
+    	 	<generator class="native"/>
+    	</id>        
+        <property name="number" type="integer"/>        
+        <property name="child_name" type="string"/>
+        <property name="child_gender" type="string"/>
+        <property name="child_grade" type="string"/>
+        <property name="subject" type="string">
+           <!-- <column name="TITLE" />	 --> 
+        </property>
+        <property name="teacher_gender" type="string">
+           <!--  <column name="DATE" /> --> 
+        </property>
+        <property name="teach_time" type="string">
+           <!--  <column name="DATE" /> --> 
+        </property>
+        <property name="request" type="string"/>                        
+        <property name="apply_date" type="string"/>
+        <property name="state" type="boolean"/>
+        
+    </class>
+</hibernate-mapping>

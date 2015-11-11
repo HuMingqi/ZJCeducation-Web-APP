@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC 
+	"-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+	"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated 2015-1-12 12:34:09 by Hibernate Tools 3.4.0.CR1 -->
+<hibernate-mapping>
+    <class name="zjc.edu.pojo.Teacher_info" table="teacher_info">
+        <id name="number" type="integer">           
+			<!-- 指定主键策略 -->
+            <generator class="identity" /><!-- 由数据库自动完成，要求数据库必须支持自增主键。mysql支持，oracle不支持。OID必须为long、int或short类型。
+
+										     优点：无并发访问问题。 -->
+        </id>
+        <property name="nickname" type="string">
+           <!-- <column name="TITLE" />	 --> 
+        </property>
+        <property name="name" type="string">
+           <!--  <column name="AUTHOR" /> --> 
+        </property>
+        <property name="id_number" type="string">
+           <!--  <column name="DATE" /> --> 
+        </property>
+        <property name="identity" type="string"/>
+        <property name="gender" type="string"/>
+        <property name="birth_date" type="date"/>
+        <property name="address" type="string"/>
+        <property name="school" type="string"/>
+        <property name="major" type="string"/>
+        <property name="background" type="string"/>
+        <property name="phone" type="string"/>
+        <property name="email" type="string"/>
+        <property name="qq" type="string"/>
+        <property name="password" type="string"/>
+        <property name="register_date" type="date"/>
+    </class>
+</hibernate-mapping>

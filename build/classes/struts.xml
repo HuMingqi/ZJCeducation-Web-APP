@@ -1,0 +1,266 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts PUBLIC
+	"-//Apache Software Foundation//DTD Struts Configuration 2.3//EN"
+	"http://struts.apache.org/dtds/struts-2.3.dtd">
+
+<struts>
+	<!--<constant name="struts.objectFactory" value="spring"/> 使用spring创建管理struts2的action操作,它是struts2和spring的连接的关键 -->
+    <constant name="struts.enable.DynamicMethodInvocation" value="false" />
+    <constant name="struts.devMode" value="true" />
+    <constant name="struts.action.excludePattern" value="/*.html" />
+	<constant name="struts.action.includePattern" value="/*.action" />
+	
+    <package name="default" extends="struts-default" namespace="/"> <!-- 命名空间被用于url,"/" 表示根命名空间 ，只处理根命名空间请求-->
+		<interceptors>
+        	<interceptor name="checkLogin" class="zjc.edu.interceptors.CheckLoginInterceptor">
+        		<param name="number">teacherNumber</param>   <!-- 指定默认值 teacherNumber是sessionkey-->     		
+        	</interceptor>
+        	<interceptor name="checkManagerLogin" class="zjc.edu.interceptors.CheckLoginInterceptor">
+        		<param name="number">managerName</param>   <!-- 指定默认值 teacherNumber是sessionkey-->     		
+        	</interceptor>
+        </interceptors>				<!-- 拦截器必须置顶 -->
+        
+        <default-action-ref name="index" />
+
+        <global-results>
+            <result name="error">/error.html</result>
+            <result name="login">/zjc/login.html</result>
+            <result name="execute">/exe.html</result>
+        </global-results>
+
+        <global-exception-mappings>
+            <exception-mapping exception="java.lang.Exception" result="error"/>
+        </global-exception-mappings>
+                       
+        <action name="register" class="TeacherRegisterAction" method="register">
+        	<result name="success">/zjc/TRsuccess.jsp</result>        	
+        </action>
+        <action name="teacherCenter" class="TeacherCenterAction">
+        	<result name="execute">/zjc/personalCenter/index.jsp</result> <!-- 使用拦截器可以达到隐藏 页面URL作用-->  
+        	<interceptor-ref name="checkLogin">
+        		<param name="includeMethods">execute</param>	<!-- 要拦截的方法 -->
+        	</interceptor-ref> 
+        </action>
+        <action name="login" class="TeacherLoginAction" method="login">
+        	<!-- <result name="success" type="redirectAction">/beTutor</result> -->
+        	<result name="success" type="redirectAction">
+        		<param name="actionName">teacherCenter</param>
+        		<!-- <param name="namespace">/</param>  不写默认命名空间-->
+        	</result>
+        	<result name="fail">/zjc/loginFail.html</result> 
+        </action>
+        <action name="teacherLogout" class="TeacherLogoutAction" method="logout">
+        	<result name="success">/zjc/login.html</result>        	
+        </action>
+        <action name="editPersonalData" class="TeacherEditAction" method="editPersonalData">
+        	<!-- <result name="success" type="redirectAction">/beTutor</result> -->
+        	<result name="success" type="redirectAction">
+        		<param name="actionName">teacherCenter</param>
+        	</result>
+        </action>
+         <action name="changePassword" class="changePasswordAction" method="modifyPassword">        	
+        	<result name="relogin" type="redirectAction">
+        		<param name="actionName">teacherCenter</param>
+        	</result>
+        </action>        
+        <action name="beTutor" class="TeacherAction">
+        	<result name="execute">/zjc/agreement.html</result>   
+        	<interceptor-ref name="checkLogin">
+        		<param name="includeMethods">execute</param>	<!-- 要拦截的方法 -->
+        	</interceptor-ref>     	
+        </action>
+        <action name="teacherApply" class="TeacherApplyAction" method="submitApplication">
+        	<result name="success">/zjc/TapplySuccess.html</result>           	
+        </action>
+        
+        
+        <action name="managerLogin" class="ManagerLoginAction" method="login">
+        	<result name="success" type="redirectAction">
+        		<param name="actionName">manageCenter</param>
+        		<!-- <param name="namespace">/</param>  不写默认命名空间-->
+        	</result>          	
+			<result name="fail">/zjc/managerLogin/index.html</result>         	     	
+        </action>
+        <action name="manageCenter" class="ManageCenterAction">
+        	<result name="execute">/zjc/backstage/index.html</result> <!-- 使用拦截器可以达到隐藏 页面URL作用-->  
+        	<result name="managerLogin">/zjc/managerLogin/index.html</result>
+        	<interceptor-ref name="checkManagerLogin">
+        		<param name="includeMethods">execute</param>	<!-- 要拦截的方法 -->
+        	</interceptor-ref>         	
+        </action>
+        <action name="managerLogout" class="ManagerLogoutAction" method="logout">
+        	<result name="success">/zjc/managerLogin/index.html</result>        	
+        </action>
+        <action name="readTodayTApply" class="ReadTodayTeacherApplyAction" method="readTodayTApp">
+        	<result name="success">/zjc/backstage/showTApply.jsp</result>
+        	<result name="none">/zjc/backstage/showTApply.jsp</result>        	
+        </action>
+        
+        <action name="readWeekTApply" class="ReadWeekTApplyAction" method="readWeekTApp">
+        	<result name="success">/zjc/backstage/showTApply.jsp</result>
+        	<result name="none">/zjc/backstage/showTApply.jsp</result>  
+        </action>
+        
+        <action name="readCurMonthTApply" class="ReadCurMonthTeacherApplyAction" method="readCurMonthTApp">
+        	<result name="success">/zjc/backstage/showTApply.jsp</result>
+        	<result name="none">/zjc/backstage/showTApply.jsp</result>  
+        </action>
+        
+        <action name="readAllTApply" class="ReadAllTeacherApplyAction" method="readAllTApp">
+        	<result name="success">/zjc/backstage/showTApply.jsp</result>
+        	<result name="none">/zjc/backstage/showTApply.jsp</result>  
+        </action>
+        
+        <action name="readAnytimeTeacherApply" class="ReadAnytimeTeacherApplyAction" method="readRange">
+        	<result name="success">/zjc/backstage/showTApply.jsp</result>
+        	<result name="none">/zjc/backstage/showTApply.jsp</result>  
+        </action>
+        
+        <action name="undoneTApply" class="UndoneTApplyAction" method="queryundoneTApply">
+        	<result name="success">/zjc/backstage/showTApply.jsp</result>
+        	<result name="none">/zjc/backstage/showTApply.jsp</result>  
+        </action>
+        
+        <action name="doneTApply" class="DoneTApplyAction" method="querydoneTApply">
+        	<result name="success">/zjc/backstage/showTApply.jsp</result>
+        	<result name="none">/zjc/backstage/showTApply.jsp</result>  
+        </action>
+        
+        <action name="numberTApply" class="NumberTApplyAction" method="queryTByNumber">
+        	<result name="success">/zjc/backstage/showTApply.jsp</result>
+        	<result name="none">/zjc/backstage/showTApply.jsp</result>  
+        </action>
+        
+        <action name="phoneTApply" class="PhoneTApplyAction" method="queryTByPhone">
+        	<result name="success">/zjc/backstage/showTApply.jsp</result>
+        	<result name="none">/zjc/backstage/showTApply.jsp</result>  
+        </action>
+        
+        <action name="numberTInfo" class="NumberTInfoAction" method="queryTInfoByNumber">
+        	<result name="success">/zjc/backstage/showTInfo.jsp</result>
+        	<result name="none">/zjc/backstage/showTInfo.jsp</result>  
+        </action>
+        
+        <action name="phoneTInfo" class="PhoneTInfoAction" method="queryTInfoByPhone">
+        	<result name="success">/zjc/backstage/showTInfo.jsp</result>
+        	<result name="none">/zjc/backstage/showTInfo.jsp</result>  
+        </action>
+        <action name="setTAppState" class="SetTAppStateAction" method="setTAppState">
+        	<result name="success">/zjc/backstage/showTApply.jsp</result>
+        	<result name="fail">/zjc/backstage/error.jsp</result>  
+        </action>
+        
+        
+        
+        <action name="readTodayPApply" class="ReadTodayParentsApplyAction" method="readTodayPApp">
+        	<result name="success">/zjc/backstage/showPApply.jsp</result>
+        	<result name="none">/zjc/backstage/showPApply.jsp</result>        	
+        </action>
+        
+        <action name="readWeekPApply" class="ReadWeekPApplyAction" method="readWeekPApp">
+        	<result name="success">/zjc/backstage/showPApply.jsp</result>
+        	<result name="none">/zjc/backstage/showPApply.jsp</result>  
+        </action>
+        
+        <action name="readCurMonthPApply" class="ReadCurMonthParentsApplyAction" method="readCurMonthPApp">
+        	<result name="success">/zjc/backstage/showPApply.jsp</result>
+        	<result name="none">/zjc/backstage/showPApply.jsp</result>  
+        </action>
+        
+        <action name="readAllPApply" class="ReadAllParentsApplyAction" method="readAllPApp">
+        	<result name="success">/zjc/backstage/showPApply.jsp</result>
+        	<result name="none">/zjc/backstage/showPApply.jsp</result>  
+        </action>               
+        
+        <action name="undonePApply" class="UndonePApplyAction" method="queryundonePApply">
+        	<result name="success">/zjc/backstage/showPApply.jsp</result>
+        	<result name="none">/zjc/backstage/showPApply.jsp</result>  
+        </action>
+        
+        <action name="donePApply" class="DonePApplyAction" method="querydonePApply">
+        	<result name="success">/zjc/backstage/showPApply.jsp</result>
+        	<result name="none">/zjc/backstage/showPApply.jsp</result>  
+        </action>
+        
+        <action name="numberPApply" class="NumberPApplyAction" method="queryPByNumber">
+        	<result name="success">/zjc/backstage/showPApply.jsp</result>
+        	<result name="none">/zjc/backstage/showPApply.jsp</result>  
+        </action>
+         
+        <action name="numberPInfo" class="NumberPInfoAction" method="queryPInfoByNumber">
+        	<result name="success">/zjc/backstage/showPInfo.jsp</result>
+        	<result name="none">/zjc/backstage/showPInfo.jsp</result>  
+        </action>
+        
+        <action name="phonePInfo" class="PhonePInfoAction" method="queryPInfoByPhone">
+        	<result name="success">/zjc/backstage/showPInfo.jsp</result>
+        	<result name="none">/zjc/backstage/showPInfo.jsp</result>  
+        </action> 
+        
+        <action name="setPAppState" class="SetPAppStateAction" method="setPAppState">
+        	<result name="success">/zjc/backstage/showPApply.jsp</result>
+        	<result name="fail">/zjc/error.html</result>  
+        </action>     	
+    </package>
+    
+    
+    <package name="parents" extends="struts-default" namespace="/parents">
+    	<interceptors>
+        	<interceptor name="checkLogin" class="zjc.edu.interceptors.CheckLoginInterceptor">
+        		<param name="number">parentsNumber</param>   <!-- 指定默认值 teacherNumber是sessionkey-->     		
+        	</interceptor>
+        </interceptors>				<!-- 拦截器必须置顶 -->                
+
+        <global-results>
+            <result name="error">/error.html</result>
+            <result name="login">/zjc/login.html</result>
+            <result name="execute">/exe.html</result>
+        </global-results>
+
+        <global-exception-mappings>
+            <exception-mapping exception="java.lang.Exception" result="/exception.html"/>
+        </global-exception-mappings>
+                       
+        <action name="register" class="ParentsRegisterAction" method="register">        	
+        	<result name="success">/zjc/PRsuccess.jsp</result>        	
+        </action>
+        <action name="parentsCenter" class="ParentsCenterAction">
+        	<result name="execute">/zjc/parentsCenter/index.jsp</result> <!-- 使用拦截器可以达到隐藏 页面URL作用-->  
+        	<interceptor-ref name="checkLogin">
+        		<param name="includeMethods">execute</param>	<!-- 要拦截的方法 -->
+        	</interceptor-ref> 
+        </action>
+        <action name="login" class="ParentsLoginAction" method="login">
+        	<!-- <result name="success" type="redirectAction">/beTutor</result> -->
+        	<result name="success" type="redirectAction">
+        		<param name="actionName">parentsCenter</param>
+        		<!-- <param name="namespace">/</param>  不写默认命名空间-->
+        	</result>
+        	<result name="fail">/zjc/loginFail.html</result> 
+        </action>
+        <action name="parentsLogout" class="ParentsLogoutAction" method="logout">
+        	<result name="success">/zjc/login.html</result>        	
+        </action>
+        <action name="editPersonalData" class="ParentsEditAction" method="editPersonalData">
+        	<!-- <result name="success" type="redirectAction">/beTutor</result> -->
+        	<result name="success" type="redirectAction">
+        		<param name="actionName">parentsCenter</param>
+        	</result>
+        </action>
+         <action name="changePassword" class="changePPasswordAction" method="modifyPassword">        	
+        	<result name="relogin" >/zjc/login.html</result>        		        
+        </action>        
+        <action name="findTutor" class="ParentsAction">
+        	<result name="execute">/zjc/findTutor.html</result>   
+        	<interceptor-ref name="checkLogin">
+        		<param name="includeMethods">execute</param>	<!-- 要拦截的方法 -->
+        	</interceptor-ref>     	
+        </action>
+        <action name="parentsApply" class="ParentsApplyAction" method="submitApplication">
+        	<result name="success">/zjc/PapplySuccess.html</result>           	
+        </action>
+               
+    </package>		   
+
+</struts>
+
